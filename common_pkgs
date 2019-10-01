@@ -1,0 +1,11 @@
+vim
+wget
+python
+python-sh
+links
+git
+sudo
+bash-completion
+tmux
+glances
+fzf
