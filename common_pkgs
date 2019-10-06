@@ -9,3 +9,4 @@ bash-completion
 tmux
 glances
 fzf
+source-highlight
