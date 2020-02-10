@@ -37,7 +37,7 @@ cat /etc/pacman.d/mirrorlist | grep "United States" -A 1 > /etc/pacman.d/mirrorl
 rankmirrors -n 6 /etc/pacman.d/mirrorlist.USA > /etc/pacman.d/mirrorlist
 
 # Install arch on new root partition
-pacstrap /mnt/ base base-devel
+pacstrap /mnt/ base base-devel linux, mkinitcpio, grub, dhcpcd
 
 # Generate fstab
 genfstab -p /mnt > /mnt/etc/fstab
@@ -55,7 +55,6 @@ echo $HOSTNAME > /mnt/etc/hostname
 
 arch-chroot /mnt mkinitcpio -p linux
 
-arch-chroot /mnt pacman --noconfirm -S grub
 arch-chroot /mnt grub-install $DISK
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
