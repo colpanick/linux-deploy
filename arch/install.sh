@@ -10,6 +10,45 @@ HOSTNAME="changeme"
 
 #############################
 
+if [ ! $1 ]
+then
+    echo "Disk to use"
+    echo "  1. /dev/sda (Standard)"
+    echo "  2. /dev/vda (Vultr)"
+    echo "  3. Other..."
+    echo
+    read disk_sel
+    
+    case $disk_sel in
+        "1")
+            DISK="/dev/sda"
+            ;;
+        "2")
+            DISK="/dev/vda"
+            ;;
+        "3")
+            echo "Disk: "
+            read DISK
+            ;;
+        *)
+            echo "Invalid Selection"
+            exit 1
+        esac
+
+    echo "Hostname: "
+    read HOSTNAME
+fi
+
+if [ $1 ] && [ ! $1 = "-d" ]
+then
+    echo
+    echo "Usage: install.sh [-d]"
+    echo
+    echo "-d: Use default configuration"
+    echo
+    exit 1
+fi
+
 # Let's get those partitions going
 sfdisk $DISK << EOF
 ,2GiB,S
