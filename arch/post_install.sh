@@ -44,9 +44,9 @@ echo setting up sudo
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 echo "installing yay"
-git clone https://aur.archlinux.org/yay.git
-chown jorge:jorge yay
-cd yay
+git clone https://aur.archlinux.org/yay.git /tmp/yay
+chown jorge:jorge /tmp/yay
+cd /tmp/yay
 sudo -u jorge makepkg -si --noconfirm
 cd ..
 rm -rf yay
