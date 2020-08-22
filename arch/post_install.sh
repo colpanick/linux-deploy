@@ -15,7 +15,7 @@ cp /root/linux-deploy/get_dotfiles /root
 
 install_packages common
 
-read -p Install GUI? [y/n]
+read -p 'Install GUI? [y/n] '
 drivers=(None virtual-box xf86-video-amdgpu xf86-video-ati xf86-video-intel xf86-video-nouveau nvidia nvidia-390xx)
 if [ $REPLY == y ] || [ $REPLY == yes ]
 then
@@ -27,7 +27,7 @@ then
     do
         echo $num. $${drivers[$num]} 
     done
-    read -p Selection:
+    read -p 'Selection:'
     if [ $REPLY -gt 1 ] || [ $REPLY -lt ${#drivers[*]} ]
     then
         pacman -S --noconfirm ${drivers[$REPLY]}
