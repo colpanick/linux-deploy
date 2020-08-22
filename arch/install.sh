@@ -94,3 +94,5 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 arch-chroot /mnt passwd -d root
 
 arch-chroot /mnt systemctl enable dhcpcd.service
+
+cp -R $(dirname $0)/.. /mnt/root/
