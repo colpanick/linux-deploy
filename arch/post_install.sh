@@ -36,7 +36,7 @@ echo "Password for root"
 passwd
 
 echo setting up dotfiles script for jorge
-cp linux-deploy/get_dotfiles /home/jorge
+cp /root/linux-deploy/get_dotfiles /home/jorge
 # auto run get_dotfiles upon first login of intractive shell
 echo "[[ $- != *i* ]] && . /home/jorge/get_dotfiles" >> /home/jorge/.bashrc
 
