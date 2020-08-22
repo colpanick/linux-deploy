@@ -53,4 +53,4 @@ cd -
 
 echo "Installing AUR apps"
 pkgs=$(cat $sdir/pkglists/aur-apps | tr "\n" " ")
-yay --noconfirm -S $pkgs
+sudo -u jorge yay --noconfirm -S $pkgs
