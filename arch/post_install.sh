@@ -48,8 +48,7 @@ git clone https://aur.archlinux.org/yay.git /tmp/yay
 chown jorge:jorge /tmp/yay
 cd /tmp/yay
 sudo -u jorge makepkg -si --noconfirm
-cd ..
-rm -rf yay
+cd -
 
 
 echo "Installing AUR apps"
