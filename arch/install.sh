@@ -82,7 +82,7 @@ arch-chroot /mnt locale-gen
 echo "LANG=en_US.UTF-8" > /mnt/etc/locale.conf
 
 rm /mnt/etc/localtime
-ln -s /mnt/usr/share/zoneinfo/US/Eastern /mnt/etc/localtime
+arch-chroot /mnt ln -s /usr/share/zoneinfo/US/Eastern /etc/localtime
 
 echo $HOSTNAME > /mnt/etc/hostname
 
