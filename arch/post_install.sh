@@ -1,32 +1,47 @@
 #!/bin/bash
 
-cd /root
+install_packages () {
+    echo "Installing $1 packages"
+    pkgs=$(cat $sdir/pkglists/$1 | tr "\n" " ")
+    pacman --noconfirm -S $pkgs
+}
+
 sdir=$(dirname $0)
 
-#issues:
-
-# At one point, installer should move linux-deploy to /root
 echo "configuring dotfiles for root"
-cp linux-deploy/get_dotfiles .
-. ./get_dotfiles
-. .bashrc
+cp /root/linux-deploy/get_dotfiles /root
+. /root/get_dotfiles
+. /root/.bashrc
 
-echo "Installing common packages"
-pkgs = $(cat $sdir/pkglists/common | tr "\n" " ")
-pacman --noconfirm -S $pkgs
+install_packages common
 
-# This is too specific to virtual box
-echo "Installing Virtual Box utils and video driver"
-pkgs = $(cat $sdir/pkglists/vbox | tr "\n" " ")
-pacman --noconfirm -S $pkgs
+read -p 'Install GUI? [y/n] '
+drivers=(None virtual-box xf86-video-amdgpu xf86-video-ati xf86-video-intel xf86-video-nouveau nvidia nvidia-390xx)
+if [ $REPLY == y ] || [ $REPLY == yes ]
+then
+    echo Please select video driver
+    echo Card(s) found:
+    lspci | grep -e VGA -e 3D
+    echo Options:
+    for num in ${!drivers[*]}
+    do
+        echo $num. $${drivers[$num]} 
+    done
+    read -p 'Selection:'
+    if [ $REPLY -gt 1 ] || [ $REPLY -lt ${#drivers[*]} ]
+    then
+        pacman -S --noconfirm ${drivers[$REPLY]}
+    elif [ $REPLY -eq 1 ]
+    then
+        install_packages vbox
+    else
+        echo Skipping video driver installation
+    fi
+    
+    install_packages gui-apps
 
-echo "Installing GUI"
-pkgs = $(cat $sdir/pkglists/gui | tr "\n" " ")
-pacman --noconfirm -S $pkgs
+fi
 
-echo "Installing GUI apps"
-pkgs = $(cat $sdir/pkglists/gui-apps | tr "\n" " ")
-pacman --noconfirm -S $pkgs
 
 echo "Creating user jorge"
 useradd -m jorge
@@ -39,7 +54,7 @@ echo "Password for root"
 passwd
 
 echo setting up dotfiles script for jorge
-cp linux-deploy/get_dotfiles /home/jorge
+cp /root/linux-deploy/get_dotfiles /home/jorge
 # auto run get_dotfiles upon first login of intractive shell
 echo "[[ $- != *i* ]] && . /home/jorge/get_dotfiles" >> /home/jorge/.bashrc
 
@@ -47,14 +62,13 @@ echo setting up sudo
 sed -i 's/# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/' /etc/sudoers
 
 echo "installing yay"
-guitar yay
-chown jorge:jorge yay
-cd yay
+git clone https://aur.archlinux.org/yay.git /tmp/yay
+chown jorge:jorge /tmp/yay
+cd /tmp/yay
 sudo -u jorge makepkg -si --noconfirm
-cd ..
-rm -rf yay
+cd -
 
 
 echo "Installing AUR apps"
-pkgs = $(cat $sdir/pkglists/aur-apps | tr "\n" " ")
-yay --noconfirm -S $pkgs
+pkgs=$(cat $sdir/pkglists/aur-apps | tr "\n" " ")
+sudo -u jorge yay --noconfirm -S $pkgs
