@@ -38,6 +38,8 @@ then
         echo Skipping video driver installation
     fi
     
+    install_packages gui
+    
     install_packages gui-apps
 
 fi
