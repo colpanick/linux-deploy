@@ -16,16 +16,16 @@ cp /root/linux-deploy/get_dotfiles /root
 install_packages common
 
 read -p 'Install GUI? [y/n] '
-drivers=(None virtual-box xf86-video-amdgpu xf86-video-ati xf86-video-intel xf86-video-nouveau nvidia nvidia-390xx)
+drivers=("None" "virtual-box" "xf86-video-amdgpu" "xf86-video-ati" "xf86-video-intel" "xf86-video-nouveau" "nvidia" "nvidia-390xx")
 if [ $REPLY == y ] || [ $REPLY == yes ]
 then
     echo Please select video driver
-    echo Card(s) found:
+    echo "Card(s) found:"
     lspci | grep -e VGA -e 3D
     echo Options:
     for num in ${!drivers[*]}
     do
-        echo $num. $${drivers[$num]} 
+        echo $num. ${drivers[$num]} 
     done
     read -p 'Selection:'
     if [ $REPLY -gt 1 ] || [ $REPLY -lt ${#drivers[*]} ]
